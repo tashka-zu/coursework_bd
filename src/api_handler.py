@@ -28,12 +28,25 @@ def get_vacancies(employer_id):
         return response.json()['items']
     return []
 
+def search_employers(keyword):
+    """
+    Поиск работодателей по ключевому слову
+    """
+    url = f"https://api.hh.ru/employers"
+    params = {'text': keyword}
+    response = requests.get(url, params=params)
+    employer_ids = []
+
+    if response.status_code == 200:
+        employers = response.json()['items']
+        for employer in employers:
+            employer_ids.append(employer['id'])
+            print(f"Company: {employer['name']}, ID: {employer['id']}")
+
+    return employer_ids
+
 # Пример использования
 if __name__ == "__main__":
-    # Пример списка идентификаторов работодателей
-    example_employer_ids = [123, 456, 789]  # Замените на реальные идентификаторы
-    employers = get_employers(example_employer_ids)
-    print(employers)
-
-    vacancies = get_vacancies(example_employer_ids[0])
-    print(vacancies)
+    keyword = "Yandex"
+    employer_ids = search_employers(keyword)
+    print(employer_ids)
