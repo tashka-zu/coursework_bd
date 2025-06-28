@@ -21,6 +21,8 @@ def create_connection():
 def create_tables(conn):
     """
     Создает таблицы в базе данных.
+
+    :param conn: Соединение с базой данных.
     """
     commands = (
         """
@@ -54,6 +56,9 @@ def create_tables(conn):
 def insert_employer(conn, employer):
     """
     Вставляет данные о работодателе в таблицу employers.
+
+    :param conn: Соединение с базой данных.
+    :param employer: Данные о работодателе.
     """
     command = """
     INSERT INTO employers (employer_id, name, description, url)
@@ -71,6 +76,9 @@ def insert_employer(conn, employer):
 def insert_vacancy(conn, vacancy):
     """
     Вставляет данные о вакансии в таблицу vacancies.
+
+    :param conn: Соединение с базой данных.
+    :param vacancy: Данные о вакансии.
     """
     command = """
     INSERT INTO vacancies (vacancy_id, employer_id, name, description, salary, url)
