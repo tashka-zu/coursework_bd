@@ -1,116 +1,106 @@
+import os
+from typing import Any, List, Optional, Tuple
+
 import psycopg2
 from dotenv import load_dotenv
-import os
 
+# Загрузка переменных окружения из файла .env
 load_dotenv()
 
+
 class DBManager:
-    def __init__(self):
+    def __init__(self) -> None:
         """Инициализация соединения с базой данных."""
         self.conn = psycopg2.connect(
-            dbname=os.getenv('DB_NAME'),
-            user=os.getenv('DB_USER'),
-            password=os.getenv('DB_PASSWORD'),
-            host=os.getenv('DB_HOST'),
-            port=os.getenv('DB_PORT')
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
         )
 
-    def get_companies_and_vacancies_count(self):
+    def get_companies_and_vacancies_count(self) -> List[Tuple[Any, ...]]:
         """
         Получает список всех компаний и количество вакансий у каждой компании.
         """
         with self.conn.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT e.name, COUNT(v.vacancy_id) as vacancy_count
                 FROM employers e
                 LEFT JOIN vacancies v ON e.employer_id = v.employer_id
                 GROUP BY e.name
-            """)
+            """
+            )
             return cursor.fetchall()
 
-    def get_all_vacancies(self):
+    def get_all_vacancies(self) -> List[Tuple[Any, ...]]:
         """
         Получает список всех вакансий с указанием названия компании, названия вакансии,
         зарплаты и ссылки на вакансию.
+        Возвращает список кортежей, где каждый кортеж содержит информацию о вакансии.
         """
         with self.conn.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT e.name, v.name as vacancy_name, v.salary, v.url
                 FROM vacancies v
                 JOIN employers e ON v.employer_id = e.employer_id
-            """)
+            """
+            )
             return cursor.fetchall()
 
-    def get_avg_salary(self):
+    def get_avg_salary(self) -> Optional[float]:
         """
         Получает среднюю зарплату по вакансиям.
+        Возвращает среднюю зарплату или None, если данные отсутствуют.
         """
         with self.conn.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT AVG(CAST(salary AS FLOAT)) as avg_salary
                 FROM vacancies
                 WHERE salary IS NOT NULL
-            """)
+            """
+            )
             result = cursor.fetchone()
             return result[0] if result else None
 
-    def get_vacancies_with_higher_salary(self):
+    def get_vacancies_with_higher_salary(self) -> List[Tuple[Any, ...]]:
         """
         Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям.
+        Возвращает список кортежей с информацией о вакансиях.
         """
         avg_salary = self.get_avg_salary()
         with self.conn.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT e.name, v.name as vacancy_name, v.salary, v.url
                 FROM vacancies v
                 JOIN employers e ON v.employer_id = e.employer_id
                 WHERE CAST(v.salary AS FLOAT) > %s
-            """, (avg_salary,))
+            """,
+                (avg_salary,),
+            )
             return cursor.fetchall()
 
-    def get_vacancies_with_keyword(self, keyword):
+    def get_vacancies_with_keyword(self, keyword: str) -> List[Tuple[Any, ...]]:
         """
         Получает список всех вакансий, в названии которых содержатся переданные слова.
+        Возвращает список кортежей с информацией о вакансиях.
         """
         with self.conn.cursor() as cursor:
-            cursor.execute("""
+            cursor.execute(
+                """
                 SELECT e.name, v.name as vacancy_name, v.salary, v.url
                 FROM vacancies v
                 JOIN employers e ON v.employer_id = e.employer_id
                 WHERE v.name ILIKE %s
-            """, (f'%{keyword}%',))
+            """,
+                (f"%{keyword}%",),
+            )
             return cursor.fetchall()
 
-    def close(self):
+    def close(self) -> None:
         """Закрывает соединение с базой данных."""
         self.conn.close()
-
-# Пример использования
-if __name__ == "__main__":
-    db_manager = DBManager()
-
-    print("Companies and their vacancies count:")
-    companies_and_vacancies = db_manager.get_companies_and_vacancies_count()
-    for company, count in companies_and_vacancies:
-        print(f"{company}: {count}")
-
-    print("\nAll vacancies:")
-    all_vacancies = db_manager.get_all_vacancies()
-    for vacancy in all_vacancies:
-        print(vacancy)
-
-    avg_salary = db_manager.get_avg_salary()
-    print(f"\nAverage salary: {avg_salary}")
-
-    print("\nVacancies with higher salary than average:")
-    higher_salary_vacancies = db_manager.get_vacancies_with_higher_salary()
-    for vacancy in higher_salary_vacancies:
-        print(vacancy)
-
-    keyword = "python"
-    print(f"\nVacancies with keyword '{keyword}':")
-    keyword_vacancies = db_manager.get_vacancies_with_keyword(keyword)
-    for vacancy in keyword_vacancies:
-        print(vacancy)
-
-    db_manager.close()
