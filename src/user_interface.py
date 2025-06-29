@@ -2,7 +2,7 @@ from db_manager import DBManager
 
 
 def display_menu() -> None:
-    """Отображает меню для взаимодействия с пользователем."""
+    """Отображает меню для взаимодействия с пользователем"""
     print("\nВыберите действие:")
     print("1. Получить список всех компаний и количество вакансий у каждой компании")
     print("2. Получить список всех вакансий")
@@ -13,34 +13,34 @@ def display_menu() -> None:
 
 
 def get_companies_and_vacancies_count(db_manager: DBManager) -> None:
-    """Получает и отображает список всех компаний и количество вакансий у каждой компании."""
+    """Получает и отображает список всех компаний и количество вакансий у каждой компании"""
     companies_and_vacancies = db_manager.get_companies_and_vacancies_count()
     for company, count in companies_and_vacancies:
         print(f"Компания: {company}, Количество вакансий: {count}")
 
 
 def get_all_vacancies(db_manager: DBManager) -> None:
-    """Получает и отображает список всех вакансий."""
+    """Получает и отображает список всех вакансий"""
     vacancies = db_manager.get_all_vacancies()
     for vacancy in vacancies:
         print(f"Компания: {vacancy[0]}, Вакансия: {vacancy[1]}, Зарплата: {vacancy[2]}, Ссылка: {vacancy[3]}")
 
 
 def get_avg_salary(db_manager: DBManager) -> None:
-    """Получает и отображает среднюю зарплату по вакансиям."""
+    """Получает и отображает среднюю зарплату по вакансиям"""
     avg_salary = db_manager.get_avg_salary()
     print(f"Средняя зарплата по вакансиям: {avg_salary}")
 
 
 def get_vacancies_with_higher_salary(db_manager: DBManager) -> None:
-    """Получает и отображает список вакансий с зарплатой выше средней."""
+    """Получает и отображает список вакансий с зарплатой выше средней"""
     vacancies = db_manager.get_vacancies_with_higher_salary()
     for vacancy in vacancies:
         print(f"Компания: {vacancy[0]}, Вакансия: {vacancy[1]}, Зарплата: {vacancy[2]}, Ссылка: {vacancy[3]}")
 
 
 def get_vacancies_with_keyword(db_manager: DBManager) -> None:
-    """Получает и отображает список вакансий по ключевому слову."""
+    """Получает и отображает список вакансий по ключевому слову"""
     keyword = input("Введите ключевое слово для поиска вакансий: ")
     vacancies = db_manager.get_vacancies_with_keyword(keyword)
     for vacancy in vacancies:
