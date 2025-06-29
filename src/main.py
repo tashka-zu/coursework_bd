@@ -4,7 +4,7 @@ from user_interface import main as user_interface_main
 
 
 def load_data_to_database() -> None:
-    """Загружает данные о работодателях и вакансиях в базу данных."""
+    """Загружает данные о работодателях и вакансиях в базу данных"""
     employer_ids = [1740, 78638, 3529, 10965, 15478, 907345, 3779, 1455, 4181, 2345]
     employers = get_employers(employer_ids)
     conn = create_connection()
@@ -18,7 +18,7 @@ def load_data_to_database() -> None:
 
 
 def main() -> None:
-    """Основная функция для запуска программы."""
+    """Основная функция для запуска программы"""
     load_data_to_database()
     user_interface_main()
 

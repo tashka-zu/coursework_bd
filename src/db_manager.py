@@ -37,8 +37,8 @@ class DBManager:
     def get_all_vacancies(self) -> List[Tuple[Any, ...]]:
         """
         Получает список всех вакансий с указанием названия компании, названия вакансии,
-        зарплаты и ссылки на вакансию.
-        Возвращает список кортежей, где каждый кортеж содержит информацию о вакансии.
+        зарплаты и ссылки на вакансию
+        Возвращает список кортежей, где каждый кортеж содержит информацию о вакансии
         """
         with self.conn.cursor() as cursor:
             cursor.execute(
@@ -53,7 +53,7 @@ class DBManager:
     def get_avg_salary(self) -> Optional[float]:
         """
         Получает среднюю зарплату по вакансиям.
-        Возвращает среднюю зарплату или None, если данные отсутствуют.
+        Возвращает среднюю зарплату или None, если данные отсутствуют
         """
         with self.conn.cursor() as cursor:
             cursor.execute(
@@ -69,7 +69,7 @@ class DBManager:
     def get_vacancies_with_higher_salary(self) -> List[Tuple[Any, ...]]:
         """
         Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям.
-        Возвращает список кортежей с информацией о вакансиях.
+        Возвращает список кортежей с информацией о вакансиях
         """
         avg_salary = self.get_avg_salary()
         with self.conn.cursor() as cursor:
@@ -87,7 +87,7 @@ class DBManager:
     def get_vacancies_with_keyword(self, keyword: str) -> List[Tuple[Any, ...]]:
         """
         Получает список всех вакансий, в названии которых содержатся переданные слова.
-        Возвращает список кортежей с информацией о вакансиях.
+        Возвращает список кортежей с информацией о вакансиях
         """
         with self.conn.cursor() as cursor:
             cursor.execute(
@@ -102,5 +102,5 @@ class DBManager:
             return cursor.fetchall()
 
     def close(self) -> None:
-        """Закрывает соединение с базой данных."""
+        """Закрывает соединение с базой данных"""
         self.conn.close()

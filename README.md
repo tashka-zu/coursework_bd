@@ -39,12 +39,10 @@
 ```python
 from api_handler import get_employers, get_vacancies
 
-# Получение данных о работодателях
 employer_ids = [123, 456, 789]
 employers = get_employers(employer_ids)
 print(employers)
 
-# Получение данных о вакансиях для конкретного работодателя
 vacancies = get_vacancies(employer_ids[0])
 print(vacancies)
 ```
@@ -54,18 +52,15 @@ print(vacancies)
 ```python
 from database_setup import create_connection, create_tables, insert_employer, insert_vacancy
 
-# Создание подключения к базе данных и таблиц
 conn = create_connection()
 create_tables(conn)
 
-# Вставка данных о работодателе и вакансиях
 employer_data = {'id': 123, 'name': 'Example Company', 'description': 'Example Description', 'alternate_url': 'http://example.com'}
 insert_employer(conn, employer_data)
 
 vacancy_data = {'id': 1, 'employer': {'id': 123}, 'name': 'Example Vacancy', 'description': 'Example Vacancy Description', 'salary': {'from': 100000}, 'alternate_url': 'http://example.com/vacancy'}
 insert_vacancy(conn, vacancy_data)
 
-# Закрытие соединения
 conn.close()
 ```
 
@@ -74,7 +69,6 @@ conn.close()
 ```python
 from user_interface import main
 
-# Запуск интерфейса пользователя
 main()
 ```
 
@@ -83,23 +77,19 @@ main()
 ```python
 from db_manager import DBManager
 
-# Создание экземпляра DBManager
 db_manager = DBManager()
 
-# Получение списка всех компаний и количества вакансий у каждой компании
 companies_and_vacancies = db_manager.get_companies_and_vacancies_count()
 for company, count in companies_and_vacancies:
     print(f"Company: {company}, Vacancies: {count}")
 
-# Получение списка всех вакансий
 all_vacancies = db_manager.get_all_vacancies()
 for vacancy in all_vacancies:
     print(vacancy)
 
-# Закрытие соединения
 db_manager.close()
 ```
 
 ## Тестирование
 
-На данный момент проект не включает автоматические тесты. Однако вы можете вручную протестировать функциональность, запуская различные части кода и проверяя результаты. В будущем планируется добавить модульные тесты для проверки функциональности API, базы данных и интерфейса пользователя.
+На данный момент проект не включает автоматические тесты. Однако вы можете вручную протестировать функциональность, запуская различные части кода и проверяя результаты.
