@@ -4,7 +4,7 @@ import requests
 
 
 def get_employers(employer_ids: List[int]) -> List[Dict[str, Any]]:
-    """Получает данные о работодателях по их идентификаторам."""
+    """Получает данные о работодателях по их идентификаторам"""
     employers = []
     for employer_id in employer_ids:
         url = f"https://api.hh.ru/employers/{employer_id}"
@@ -15,7 +15,7 @@ def get_employers(employer_ids: List[int]) -> List[Dict[str, Any]]:
 
 
 def get_vacancies(employer_id: int) -> List[Dict[str, Any]]:
-    """Получает данные о вакансиях для конкретного работодателя."""
+    """Получает данные о вакансиях для конкретного работодателя"""
     url = f"https://api.hh.ru/vacancies?employer_id={employer_id}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -24,7 +24,7 @@ def get_vacancies(employer_id: int) -> List[Dict[str, Any]]:
 
 
 def search_employers(keyword: str) -> List[int]:
-    """Поиск работодателей по ключевому слову."""
+    """Поиск работодателей по ключевому слову"""
     url = "https://api.hh.ru/employers"
     params = {"text": keyword}
     response = requests.get(url, params=params)
