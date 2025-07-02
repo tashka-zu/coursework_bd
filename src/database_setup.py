@@ -8,7 +8,7 @@ load_dotenv()
 
 
 def create_connection() -> psycopg2.extensions.connection:
-    """Создает и возвращает соединение с базой данных PostgreSQL."""
+    """Создает и возвращает соединение с базой данных PostgreSQL"""
     conn = psycopg2.connect(
         dbname=os.getenv("DB_NAME"),
         user=os.getenv("DB_USER"),
@@ -20,7 +20,7 @@ def create_connection() -> psycopg2.extensions.connection:
 
 
 def create_tables(conn: psycopg2.extensions.connection) -> None:
-    """Создает таблицы в базе данных."""
+    """Создает таблицы в базе данных"""
     commands = (
         """
         CREATE TABLE IF NOT EXISTS employers (
@@ -52,7 +52,7 @@ def create_tables(conn: psycopg2.extensions.connection) -> None:
 
 
 def insert_employer(conn: psycopg2.extensions.connection, employer: Dict[str, Any]) -> None:
-    """Вставляет данные о работодателе в таблицу employers."""
+    """Вставляет данные о работодателе в таблицу employers"""
     command = """
     INSERT INTO employers (employer_id, name, description, url)
     VALUES (%s, %s, %s, %s)
@@ -70,7 +70,7 @@ def insert_employer(conn: psycopg2.extensions.connection, employer: Dict[str, An
 
 
 def insert_vacancy(conn: psycopg2.extensions.connection, vacancy: Dict[str, Any]) -> None:
-    """Вставляет данные о вакансии в таблицу vacancies."""
+    """Вставляет данные о вакансии в таблицу vacancies"""
     command = """
     INSERT INTO vacancies (vacancy_id, employer_id, name, description, salary, url)
     VALUES (%s, %s, %s, %s, %s, %s)
