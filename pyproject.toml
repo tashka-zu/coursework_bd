@@ -13,7 +13,8 @@ dependencies = [
     "black (>=25.1.0,<26.0.0)",
     "requests (>=2.32.4,<3.0.0)",
     "psycopg2-binary (>=2.9.10,<3.0.0)",
-    "python-dotenv (>=1.1.1,<2.0.0)"
+    "python-dotenv (>=1.1.1,<2.0.0)",
+    "mypy (>=1.16.1,<2.0.0)"
 ]
 
 
@@ -45,3 +46,9 @@ exclude = '''
 [tool.isort]
 # максимальная длина строки
 line_length = 119
+
+
+[tool.mypy]
+disallow_untyped_defs = true
+warn_return_any = true
+exclude = 'venv'
