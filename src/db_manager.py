@@ -9,9 +9,9 @@ load_dotenv()
 
 
 class DBManager:
-    def __init__(self):
+    def __init__(self, dbname):
         self.conn = psycopg2.connect(
-            dbname=os.getenv("DB_NAME"),
+            dbname=dbname,
             user=os.getenv("DB_USER"),
             password=os.getenv("DB_PASSWORD"),
             host=os.getenv("DB_HOST"),

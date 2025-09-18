@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 from database_setup import create_connection, create_database, create_tables, insert_employer, insert_vacancy
@@ -26,8 +28,8 @@ def load_data_to_database(conn):
 
 
 def main():
-    """Основная функция для запуска программы."""
-    db_name = "hh_data"
+    """Основная функция для запуска программы"""
+    db_name = os.getenv("DB_NAME")  # Используем переменную окружения
     create_database(db_name)
     conn = create_connection(db_name)
     if conn:
@@ -36,7 +38,7 @@ def main():
             load_data_to_database(conn)
         finally:
             conn.close()
-        user_interface_main()
+        user_interface_main(db_name)  # Передаём имя базы данных
 
 
 if __name__ == "__main__":
